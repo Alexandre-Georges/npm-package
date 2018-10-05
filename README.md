@@ -35,3 +35,7 @@ Retrieves the dependencies of an NPM package
 `node index.js react --output json`
 
 `node index.js react -o json`
+
+- Developement dependencies
+
+`node index.js react -v 0.6.0 --dev`

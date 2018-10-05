@@ -11,7 +11,8 @@ const getopt = new nodeGetopt([
   ['v', 'version=ARG', 'Version of the package'],
   ['d' , 'date=ARG', 'Date of the version'],
   ['o' , 'output=ARG', 'Output (default is human readable text, "json" for Json)'],
-  ['h' , 'help']
+  ['', 'dev', 'Developement dependencies'],
+  ['h' , 'help'],
 ]).bindHelp();
 
 const opt = getopt.parse(process.argv.slice(2));
@@ -38,7 +39,9 @@ if (opt.options.version !== undefined && opt.options.date !== undefined) {
     version = await retrieveLatestVersion.execute(packageName);
   }
 
-  const root = await retrieveInfos.execute(packageName, version);
+  const isDev = opt.options.dev === true;
+
+  const root = await retrieveInfos.execute(packageName, version, isDev);
   const outputFunction = opt.options.output === 'json' ? jsonifyTree : stringifyTree;
 
   console.log(outputFunction.execute(root));
