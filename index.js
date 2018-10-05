@@ -2,9 +2,10 @@ const nodeGetopt = require('node-getopt');
 
 const retrieveLatestVersion = require('./npm-registry/retrieve-latest-version');
 const retrieveVersionForDate = require('./npm-registry/retrieve-version-for-date');
-const buildTree = require('./tree/build-tree');
-const stringifyTree = require('./tree/stringify-tree');
-const jsonifyTree = require('./tree/jsonify-tree');
+const retrieveInfos = require('./npm-registry/retrieve-infos');
+
+const stringifyTree = require('./format/stringify-tree');
+const jsonifyTree = require('./format/jsonify-tree');
 
 const getopt = new nodeGetopt([
   ['v', 'version=ARG', 'Version of the package'],
@@ -27,6 +28,7 @@ if (opt.options.version !== undefined && opt.options.date !== undefined) {
 
 (async () => {
   const packageName = opt.argv[0];
+
   let version = null;
   if (opt.options.version) {
     version = opt.options.version;
@@ -36,11 +38,8 @@ if (opt.options.version !== undefined && opt.options.date !== undefined) {
     version = await retrieveLatestVersion.execute(packageName);
   }
 
-  const root = await buildTree.execute(packageName, version);
-
+  const root = await retrieveInfos.execute(packageName, version);
   const outputFunction = opt.options.output === 'json' ? jsonifyTree : stringifyTree;
-
-  //console.log(JSON.stringify(root));
 
   console.log(outputFunction.execute(root));
 })();

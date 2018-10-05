@@ -2,6 +2,7 @@ const getVersionInfos = require('./get-version-infos');
 
 test('getVersionInfos', () => {
   const version123 = {};
+
   let versionInfos = getVersionInfos.execute('1.2.3', { versions: {} });
   expect(versionInfos).toBe(undefined);
 

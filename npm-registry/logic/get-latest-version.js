@@ -2,7 +2,7 @@ const versionComparator = require('./version-comparator');
 
 module.exports = {
   execute: versions => {
-    const compatibleVersions = versions.concat().sort(versionComparator.execute);
-    return compatibleVersions[compatibleVersions.length - 1];
+    const orderedVersions = versions.concat().sort(versionComparator.execute);
+    return orderedVersions.length > 0 ? orderedVersions[orderedVersions.length - 1] : null;
   },
 };
